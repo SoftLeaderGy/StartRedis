@@ -23,5 +23,10 @@ class TestUserService {
         for (User user : all) {
             System.out.println(user);
         }
+        System.out.println("----------------");
+        List<User> all1 = userService.findAll();
+
+
+//        userService.deleteById("2");
     }
 }

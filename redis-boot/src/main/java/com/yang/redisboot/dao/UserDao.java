@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface UserDao {
     List<User> findAll();
+    void deleteById(String id);
 }

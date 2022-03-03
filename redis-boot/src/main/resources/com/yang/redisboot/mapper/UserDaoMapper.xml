@@ -5,8 +5,12 @@
 
 <mapper namespace="com.yang.redisboot.dao.UserDao">
 <!--    开启缓存-->
-    <cache/>
+    <cache type="com.yang.redisboot.cache.RedisCache"/>
     <select id="findAll" resultType="User">
         select * from t_user
     </select>
+
+    <delete id="deleteById">
+        delete from t_user where id = #{id}
+    </delete>
 </mapper>

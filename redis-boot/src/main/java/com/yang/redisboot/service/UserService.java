@@ -13,4 +13,5 @@ import java.util.List;
 @Service
 public interface UserService {
     List<User> findAll();
+    void deleteById(String id);
 }

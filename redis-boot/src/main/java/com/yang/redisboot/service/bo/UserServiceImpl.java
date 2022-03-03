@@ -18,11 +18,16 @@ import java.util.List;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Autowired(required = false)
     private UserDao userDao;
 
     @Override
     public List<User> findAll() {
         return userDao.findAll();
+    }
+
+    @Override
+    public void deleteById(String id) {
+        userDao.deleteById(id);
     }
 }
