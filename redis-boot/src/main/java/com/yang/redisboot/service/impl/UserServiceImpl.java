@@ -1,4 +1,4 @@
-package com.yang.redisboot.service.bo;
+package com.yang.redisboot.service.impl;
 
 import com.yang.redisboot.dao.UserDao;
 import com.yang.redisboot.entity.User;
