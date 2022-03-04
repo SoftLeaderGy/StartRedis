@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yang.redisboot.dao.EmpDao">
+<!--    开启缓存-->
+<!--    <cache type="com.yang.redisboot.cache.RedisCache"/>-->
+<!--
+        开启缓存共享，也就是UserDao 和 EmpDao 共享一个缓存，cache-ref 标签里边的namespace绑定想要共享的缓存namespace
+        这样EmpDao存进缓存的redis 大key 就是com.yang.redisboot.mapper.UserDao
+        这样就会解决两个表关联之后，修改了一个表的数据后 缓存不会被清除的问题
+        因为 原始的<cache/> 标签实现可以实现单表缓存 两个表缓存时 谁也不会干扰谁
+-->
+    <cache-ref namespace="com.yang.redisboot.dao.UserDao"/>
+    <select id="findAll" resultType="Emp">
+        select * from t_emp
+    </select>
+
+    <delete id="deleteById">
+        delete from t_emp where id = #{id}
+    </delete>
+
+    <insert id="add" parameterType="Emp">
+        insert into t_emp values (#{id},#{name})
+    </insert>
+</mapper>
