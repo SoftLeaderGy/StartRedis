@@ -5,6 +5,7 @@ import com.yang.redisboot.utils.ApplicationContextUtils;
 import org.apache.ibatis.cache.Cache;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.util.DigestUtils;
 
 /**
  * @Description:
@@ -51,7 +52,7 @@ public class RedisCache  implements Cache {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 
         // 使用redishash类型为存储模型
-        redisTemplate.opsForHash().put(id.toString(),key.toString(),value);
+        redisTemplate.opsForHash().put(id.toString(),getKeyToMD5(key.toString()),value);
     }
 
     // 缓存获取值
@@ -61,7 +62,7 @@ public class RedisCache  implements Cache {
         RedisTemplate redisTemplate = (RedisTemplate) ApplicationContextUtils.getBean("redisTemplate");
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        return redisTemplate.opsForHash().get(id.toString(), key.toString());
+        return redisTemplate.opsForHash().get(id.toString(), getKeyToMD5(key.toString()));
     }
 
     @Override
@@ -93,5 +94,11 @@ public class RedisCache  implements Cache {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         Long size = redisTemplate.opsForHash().size(id.toString());
         return size.intValue();
+    }
+
+
+    // 封装将redis key 转换成MD5形式的字符串
+    private String getKeyToMD5(String key){
+        return DigestUtils.md5DigestAsHex(key.getBytes());
     }
 }
