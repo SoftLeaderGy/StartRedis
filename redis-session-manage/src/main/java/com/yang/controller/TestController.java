@@ -1,5 +1,7 @@
 package com.yang.controller;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+
 /**
  * @Description:
  * @Author: Guo.Yang
@@ -18,8 +22,11 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/test")
+@Slf4j
 public class TestController {
 
+    @Value("${server.port}")
+    private String port;
     /**
      * 使用redis的session管理  注意：当session中的数据发生变化是必须将session中变化的数据同步到redis中
      * @param request
@@ -28,6 +35,7 @@ public class TestController {
      */
     @RequestMapping("/test")
     public void test(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("端口------------------------->"+ port);
         List<String> list = (List<String>)request.getSession().getAttribute("list");
 
         if(list == null){
@@ -56,5 +64,11 @@ public class TestController {
         // 退出登陆
         request.getSession().invalidate(); // 注销session 使其失效
         response.getWriter().println("退出登录");
+    }
+
+
+    @RequestMapping("/port")
+    String port(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return port;
     }
 }
